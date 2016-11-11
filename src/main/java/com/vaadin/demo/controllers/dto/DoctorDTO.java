@@ -38,4 +38,20 @@ public class DoctorDTO {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DoctorDTO doctorDTO = (DoctorDTO) o;
+
+        return id != null ? id.equals(doctorDTO.id) : doctorDTO.id == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

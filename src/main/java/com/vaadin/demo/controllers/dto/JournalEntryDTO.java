@@ -50,4 +50,6 @@ public class JournalEntryDTO {
     public void setAppointmentType(AppointmentType appointmentType) {
         this.appointmentType = appointmentType;
     }
+
+
 }

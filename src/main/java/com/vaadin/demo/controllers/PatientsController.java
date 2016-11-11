@@ -4,10 +4,8 @@ import com.vaadin.demo.controllers.dto.JournalEntryDTO;
 import com.vaadin.demo.controllers.dto.PatientDTO;
 import com.vaadin.demo.repositories.PatientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Set;
@@ -42,5 +40,23 @@ public class PatientsController {
                 .stream()
                 .map(JournalEntryDTO::new)
                 .collect(Collectors.toSet());
+    }
+
+    @RequestMapping(path = "/{id}/journalentries", method = RequestMethod.PUT)
+    ResponseEntity<?> addJournalEntry(@PathVariable("id") long id, @RequestBody JournalEntryDTO newEntry){
+//
+//        Patient patient = patientsRepository
+//                .findOne(id);
+//        JournalEntry journalEntry = new JournalEntry(newEntry.getDate(), newEntry.getEntry(), newEntry.getAppointmentType());
+//        journalEntry.setDoctor(patient.getDoctor());
+//
+//        patient.getJournalEntries().add(journalEntry);
+//
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest().path("/{id}")
+//                .buildAndExpand(result.getId()).toUri();
+//
+//        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().build();
     }
 }
