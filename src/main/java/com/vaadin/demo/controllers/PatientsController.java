@@ -27,9 +27,19 @@ public class PatientsController {
                 .collect(Collectors.toSet());
     }
 
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    PatientDTO updatePatient(@RequestBody PatientDTO patient){
+        return null;
+    }
+
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     PatientDTO getPatient(@PathVariable("id") long id){
         return new PatientDTO(patientsRepository.findOne(id));
+    }
+
+    @RequestMapping(path = "/{id}", method = RequestMethod.POST)
+    PatientDTO updatePatient(@PathVariable("id") long id, @RequestBody PatientDTO patient){
+        return null;
     }
 
     @RequestMapping(path = "/{id}/journalentries", method = RequestMethod.GET)
@@ -44,19 +54,6 @@ public class PatientsController {
 
     @RequestMapping(path = "/{id}/journalentries", method = RequestMethod.PUT)
     ResponseEntity<?> addJournalEntry(@PathVariable("id") long id, @RequestBody JournalEntryDTO newEntry){
-//
-//        Patient patient = patientsRepository
-//                .findOne(id);
-//        JournalEntry journalEntry = new JournalEntry(newEntry.getDate(), newEntry.getEntry(), newEntry.getAppointmentType());
-//        journalEntry.setDoctor(patient.getDoctor());
-//
-//        patient.getJournalEntries().add(journalEntry);
-//
-//        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(result.getId()).toUri();
-//
-//        return ResponseEntity.created(location).build();
-        return ResponseEntity.ok().build();
+        return null;
     }
 }

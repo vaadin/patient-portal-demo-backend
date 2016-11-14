@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,8 +25,8 @@ public class AnalyticsController {
     PatientsRepository patientsRepository;
 
     @RequestMapping(path = "/age", method = RequestMethod.GET)
-    public Collection<Map<String, Object>> getStatsByAge() {
-        return patientsRepository
+    public Map<String, Object> getStatsByAge() {
+        List<HashMap<String, Object>> data = patientsRepository
                 .findAll()
                 .stream()
                 .map(PatientDTO::new)
@@ -38,16 +35,21 @@ public class AnalyticsController {
                 .stream()
                 .map(e -> {
                     HashMap<String, Object> stats = new HashMap<>();
-                    stats.put("doctor", e.getKey());
+                    stats.put("age", e.getKey());
                     stats.put("patients", e.getValue());
                     return stats;
                 })
                 .collect(Collectors.toList());
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("grouping", "age");
+        result.put("data", data);
+        return result;
     }
 
     @RequestMapping(path = "/gender", method = RequestMethod.GET)
-    public Collection<Map<String, Object>> getStatsByGender() {
-        return patientsRepository
+    public Map<String, Object> getStatsByGender() {
+        List<HashMap<String, Object>> data = patientsRepository
                 .findAll()
                 .stream()
                 .map(PatientDTO::new)
@@ -61,11 +63,16 @@ public class AnalyticsController {
                     return stats;
                 })
                 .collect(Collectors.toList());
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("grouping", "gender");
+        result.put("data", data);
+        return result;
     }
 
     @RequestMapping(path = "/doctor", method = RequestMethod.GET)
-    public Collection<Map<String, Object>> getStatsByDoctor() {
-        return patientsRepository
+    public Map<String, Object> getStatsByDoctor() {
+        List<HashMap<String, Object>> data = patientsRepository
                 .findAll()
                 .stream()
                 .map(PatientDTO::new)
@@ -79,6 +86,11 @@ public class AnalyticsController {
                     return stats;
                 })
                 .collect(Collectors.toList());
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("grouping", "doctor");
+        result.put("data", data);
+        return result;
     }
 
     private Function<PatientDTO, String> getAgeRange() {
@@ -108,8 +120,8 @@ public class AnalyticsController {
 
     private int getAge(Date birthDate) {
         LocalDate now = LocalDate.now();
-        LocalDate bdayLocal = birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localBirthDate = birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        return Period.between(bdayLocal, now).getYears();
+        return Period.between(localBirthDate, now).getYears();
     }
 }
