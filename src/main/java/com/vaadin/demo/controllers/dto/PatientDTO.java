@@ -1,6 +1,7 @@
 package com.vaadin.demo.controllers.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vaadin.demo.entities.Gender;
 import com.vaadin.demo.entities.Patient;
 
@@ -21,6 +22,9 @@ public class PatientDTO {
     private String ssn;
     private String pictureUrl;
     private DoctorDTO doctor;
+
+    public PatientDTO() {
+    }
 
     public PatientDTO(Patient patient) {
         this.id = patient.getId();
@@ -142,6 +146,14 @@ public class PatientDTO {
     public void setLastVisit(Date lastVisit) {
         this.lastVisit = lastVisit;
     }
+
+    @JsonIgnore
+    public Patient toPatient(){
+        Patient p = new Patient();
+
+        return p;
+    }
+
 
     @Override
     public boolean equals(Object o) {

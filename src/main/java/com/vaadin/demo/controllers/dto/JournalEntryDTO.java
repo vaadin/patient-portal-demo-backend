@@ -12,6 +12,9 @@ public class JournalEntryDTO {
     private String entry;
     private AppointmentType appointmentType;
 
+    public JournalEntryDTO() {
+    }
+
     public JournalEntryDTO(JournalEntry entry) {
         this.date = entry.getDate();
         this.doctor = new DoctorDTO(entry.getDoctor());

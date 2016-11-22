@@ -8,6 +8,10 @@ public class DoctorDTO {
     private String firstName;
     private String lastName;
 
+
+    public DoctorDTO() {
+    }
+
     public DoctorDTO(Doctor doctor) {
         this.id = doctor.getId();
         this.firstName = doctor.getFirstName();

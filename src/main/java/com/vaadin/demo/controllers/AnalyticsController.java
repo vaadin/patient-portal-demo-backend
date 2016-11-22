@@ -81,7 +81,7 @@ public class AnalyticsController {
                 .stream()
                 .map(e -> {
                     HashMap<String, Object> stats = new HashMap<>();
-                    stats.put("age", e.getKey());
+                    stats.put("doctor", e.getKey());
                     stats.put("patients", e.getValue());
                     return stats;
                 })

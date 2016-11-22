@@ -26,8 +26,8 @@ import java.util.stream.Stream;
 @Component
 public class DBInitService implements ApplicationListener<ContextRefreshedEvent> {
 
-    public static final int NUM_DOCTORS = 20;
-    public static final int NUM_PATIENTS = 100;
+    public static final int NUM_DOCTORS = 5;
+    public static final int NUM_PATIENTS = 80;
     public static final int MAX_JOURNAL_ENTRIES = 20;
 
     @Autowired
@@ -97,7 +97,7 @@ public class DBInitService implements ApplicationListener<ContextRefreshedEvent>
                 journalEntry.setDoctor(patient.getDoctor());
 
                 return journalEntry;
-            }).limit(random.nextInt(MAX_JOURNAL_ENTRIES)).collect(Collectors.toSet()));
+            }).limit(random.nextInt(MAX_JOURNAL_ENTRIES) + 1).collect(Collectors.toSet()));
 
             patient.setPictureUrl(r.get("picture").get("large").asText());
 
