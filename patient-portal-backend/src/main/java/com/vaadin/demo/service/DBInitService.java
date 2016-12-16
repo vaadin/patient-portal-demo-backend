@@ -5,16 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thedeanda.lorem.Lorem;
 import com.thedeanda.lorem.LoremIpsum;
 import com.vaadin.demo.entities.*;
-import com.vaadin.demo.repositories.DoctorsRepository;
-import com.vaadin.demo.repositories.PatientsRepository;
+import com.vaadin.demo.repositories.DoctorRepository;
+import com.vaadin.demo.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,29 +22,29 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class DBInitService implements ApplicationListener<ContextRefreshedEvent> {
+@Transactional
+public class DBInitService {
 
-    public static final int NUM_DOCTORS = 5;
-    public static final int NUM_PATIENTS = 80;
+    public static final int NUM_DOCTORS = 20;
+    public static final int NUM_PATIENTS = 100;
     public static final int MAX_JOURNAL_ENTRIES = 20;
 
     @Autowired
-    private DoctorsRepository doctorsRepository;
+    private DoctorRepository doctorRepository;
     @Autowired
-    private PatientsRepository patientsRepository;
+    private PatientRepository patientRepository;
 
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    @Autowired
-    EntityManager em;
 
     private Lorem lorem = new LoremIpsum();
     private List<Doctor> doctors;
     private Random random = new Random();
     private long medicalRecordId = random.nextInt(1000);
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent e) {
+    public DBInitService() {
+    }
+
+    public void initDatabase() {
         createDoctors();
         createPatients();
     }
@@ -59,12 +57,12 @@ public class DBInitService implements ApplicationListener<ContextRefreshedEvent>
                     capitalize(doctor.get("name").get("last").asText())));
         }));
 
-        doctorsRepository.save(doctors);
+        doctorRepository.save(doctors);
     }
 
 
     private void createPatients() {
-        doctors = doctorsRepository.findAll();
+        doctors = doctorRepository.findAll();
         ArrayList<Patient> patients = new ArrayList<>(NUM_PATIENTS);
 
         getRandomUsers(NUM_PATIENTS, "patients").ifPresent(result -> result.forEach(r -> {
@@ -97,14 +95,15 @@ public class DBInitService implements ApplicationListener<ContextRefreshedEvent>
                 journalEntry.setDoctor(patient.getDoctor());
 
                 return journalEntry;
-            }).limit(random.nextInt(MAX_JOURNAL_ENTRIES) + 1).collect(Collectors.toSet()));
+            }).limit(random.nextInt(MAX_JOURNAL_ENTRIES)).collect(Collectors.toList()));
 
             patient.setPictureUrl(r.get("picture").get("large").asText());
 
             patients.add(patient);
         }));
 
-        patientsRepository.save(patients);
+        
+        patientRepository.save(patients);
 
     }
 

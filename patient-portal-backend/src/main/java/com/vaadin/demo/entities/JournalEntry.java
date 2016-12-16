@@ -3,6 +3,8 @@ package com.vaadin.demo.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class JournalEntry {
@@ -11,9 +13,13 @@ public class JournalEntry {
     private Long id;
 
     private Date date;
-    @Column(length = 10000)
+    
+    @Size(max = 10000)
     private String entry;
+    @NotNull
     private AppointmentType appointmentType;
+    @ManyToOne
+    private Patient patient;
     @ManyToOne
     private Doctor doctor;
 
@@ -60,5 +66,13 @@ public class JournalEntry {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }

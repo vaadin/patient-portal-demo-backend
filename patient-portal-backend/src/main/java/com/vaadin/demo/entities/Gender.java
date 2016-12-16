@@ -2,5 +2,5 @@ package com.vaadin.demo.entities;
 
 
 public enum Gender {
-    MALE, FEMALE, OTHER
+    MALE, FEMALE
 }

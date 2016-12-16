@@ -1,8 +1,7 @@
 package com.vaadin.demo.controllers;
 
 import com.vaadin.demo.controllers.dto.DoctorDTO;
-import com.vaadin.demo.controllers.dto.PatientDTO;
-import com.vaadin.demo.repositories.DoctorsRepository;
+import com.vaadin.demo.repositories.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 public class DoctorsController {
 
     @Autowired
-    DoctorsRepository doctorsRepository;
+    DoctorRepository doctorsRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     Collection<DoctorDTO> getPatients() {

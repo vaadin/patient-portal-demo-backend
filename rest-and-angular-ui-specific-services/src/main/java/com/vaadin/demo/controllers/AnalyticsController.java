@@ -1,7 +1,7 @@
 package com.vaadin.demo.controllers;
 
 import com.vaadin.demo.controllers.dto.PatientDTO;
-import com.vaadin.demo.repositories.PatientsRepository;
+import com.vaadin.demo.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class AnalyticsController {
 
     @Autowired
-    PatientsRepository patientsRepository;
+    PatientRepository patientsRepository;
 
     @RequestMapping(path = "/age", method = RequestMethod.GET)
     public Map<String, Object> getStatsByAge() {

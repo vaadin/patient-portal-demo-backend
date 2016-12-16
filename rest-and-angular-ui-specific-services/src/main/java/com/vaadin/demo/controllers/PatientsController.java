@@ -4,9 +4,9 @@ import com.vaadin.demo.controllers.dto.JournalEntryDTO;
 import com.vaadin.demo.controllers.dto.PatientDTO;
 import com.vaadin.demo.entities.JournalEntry;
 import com.vaadin.demo.entities.Patient;
-import com.vaadin.demo.repositories.DoctorsRepository;
+import com.vaadin.demo.repositories.DoctorRepository;
 import com.vaadin.demo.repositories.JournalEntryRepository;
-import com.vaadin.demo.repositories.PatientsRepository;
+import com.vaadin.demo.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 public class PatientsController {
 
     @Autowired
-    PatientsRepository patientsRepository;
+    PatientRepository patientsRepository;
     @Autowired
     JournalEntryRepository journalEntryRepository;
     @Autowired
-    DoctorsRepository doctorsRepository;
+    DoctorRepository doctorsRepository;
 
 
     @RequestMapping(method = RequestMethod.GET)
