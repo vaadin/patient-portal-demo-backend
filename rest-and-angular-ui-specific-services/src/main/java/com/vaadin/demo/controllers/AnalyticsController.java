@@ -120,7 +120,7 @@ public class AnalyticsController {
 
     private int getAge(Date birthDate) {
         LocalDate now = LocalDate.now();
-        LocalDate localBirthDate = birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localBirthDate = new Date(birthDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         return Period.between(localBirthDate, now).getYears();
     }
