@@ -92,9 +92,13 @@ public class AnalyticsService {
 
     private int getAge(Date birthDate) {
         LocalDate now = LocalDate.now();
-        LocalDate localBirthDate = birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
+        LocalDate localBirthDate;
+        if (birthDate instanceof java.sql.Date) {
+            localBirthDate = ((java.sql.Date) birthDate).toLocalDate();
+        } else {
+            localBirthDate = birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
         return Period.between(localBirthDate, now).getYears();
     }
-    
+
 }
