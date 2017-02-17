@@ -8,10 +8,14 @@ import com.vaadin.demo.repositories.DoctorRepository;
 import com.vaadin.demo.repositories.JournalEntryRepository;
 import com.vaadin.demo.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,13 +31,28 @@ public class PatientsController {
     DoctorRepository doctorsRepository;
 
 
+    @RequestMapping(path="/pageable", method = RequestMethod.GET)
+    Page<PatientDTO> getPatientsPageable(Pageable pageable){
+    	
+    	
+    	System.out.println("Pageable is: " + pageable);{
+    		if(pageable != null){
+    			System.out.println("Pageable has: pageNr: " + pageable.getPageNumber() +" pageSize: "+ pageable.getPageSize() +" offset: " + pageable.getOffset()+" sort: " + pageable.getSort());
+    		}
+    		
+    	}
+    	Page<Patient> findAllPatients = patientsRepository.findAll(pageable);
+    	List<PatientDTO> patientsList = findAllPatients.getContent().stream().map(PatientDTO::new).collect(Collectors.toList());
+		return new PageImpl<>(patientsList, pageable, findAllPatients.getTotalElements()); 
+
+    }
     @RequestMapping(method = RequestMethod.GET)
     Collection<PatientDTO> getPatients(){
-        return patientsRepository
-                .findAll()
-                .stream()
-                .map(PatientDTO::new)
-                .collect(Collectors.toSet());
+    	return patientsRepository
+    			.findAll()
+    			.stream()
+    			.map(PatientDTO::new)
+    			.collect(Collectors.toSet());
     }
 
     @RequestMapping(method = RequestMethod.PUT)
