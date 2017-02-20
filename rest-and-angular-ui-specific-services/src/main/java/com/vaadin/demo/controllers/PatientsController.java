@@ -31,28 +31,11 @@ public class PatientsController {
     DoctorRepository doctorsRepository;
 
 
-    @RequestMapping(path="/pageable", method = RequestMethod.GET)
-    Page<PatientDTO> getPatientsPageable(Pageable pageable){
-    	
-    	
-    	System.out.println("Pageable is: " + pageable);{
-    		if(pageable != null){
-    			System.out.println("Pageable has: pageNr: " + pageable.getPageNumber() +" pageSize: "+ pageable.getPageSize() +" offset: " + pageable.getOffset()+" sort: " + pageable.getSort());
-    		}
-    		
-    	}
-    	Page<Patient> findAllPatients = patientsRepository.findAll(pageable);
-    	List<PatientDTO> patientsList = findAllPatients.getContent().stream().map(PatientDTO::new).collect(Collectors.toList());
-		return new PageImpl<>(patientsList, pageable, findAllPatients.getTotalElements()); 
-
-    }
     @RequestMapping(method = RequestMethod.GET)
-    Collection<PatientDTO> getPatients(){
-    	return patientsRepository
-    			.findAll()
-    			.stream()
-    			.map(PatientDTO::new)
-    			.collect(Collectors.toSet());
+    Page<PatientDTO> getPatients(Pageable pageable){
+        Page<Patient> result = patientsRepository.findAll(pageable);
+        List<PatientDTO> dtos = result.getContent().stream().map(PatientDTO::new).collect(Collectors.toList());
+        return new PageImpl<>(dtos, pageable, result.getTotalElements());
     }
 
     @RequestMapping(method = RequestMethod.PUT)
