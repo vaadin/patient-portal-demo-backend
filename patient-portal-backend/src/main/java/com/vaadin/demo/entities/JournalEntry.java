@@ -1,19 +1,21 @@
 package com.vaadin.demo.entities;
 
-
 import javax.persistence.*;
-import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Entity
+@Table(name = "journalEntry")
 public class JournalEntry {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
+    @Temporal(TemporalType.DATE)
     private Date date;
-    
+
     @Size(max = 10000)
     private String entry;
     @NotNull

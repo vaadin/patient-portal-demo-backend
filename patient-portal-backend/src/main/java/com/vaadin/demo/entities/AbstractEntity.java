@@ -1,15 +1,10 @@
 package com.vaadin.demo.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
 
 /**
- *
  * @author Matti Tahvonen
  */
 @MappedSuperclass
@@ -18,7 +13,7 @@ public abstract class AbstractEntity implements Serializable, Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @Version
     int version;
 
@@ -29,7 +24,7 @@ public abstract class AbstractEntity implements Serializable, Cloneable {
     protected void setId(Long id) {
         this.id = id;
     }
-    
+
     public boolean isPersistent() {
         return id != null;
     }
@@ -39,7 +34,7 @@ public abstract class AbstractEntity implements Serializable, Cloneable {
         if (this == obj) {
             return true;
         }
-        if(this.id == null) {
+        if (this.id == null) {
             return false;
         }
 
@@ -56,5 +51,5 @@ public abstract class AbstractEntity implements Serializable, Cloneable {
         hash = 43 * hash + Objects.hashCode(this.id);
         return hash;
     }
-    
+
 }

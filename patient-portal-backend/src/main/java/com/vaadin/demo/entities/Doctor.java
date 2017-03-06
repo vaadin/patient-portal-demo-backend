@@ -1,9 +1,13 @@
 package com.vaadin.demo.entities;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
+@Table(name = "doctors")
 public class Doctor extends Person {
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     private Set<Patient> patients;
@@ -23,3 +27,5 @@ public class Doctor extends Person {
         this.patients = patients;
     }
 }
+
+

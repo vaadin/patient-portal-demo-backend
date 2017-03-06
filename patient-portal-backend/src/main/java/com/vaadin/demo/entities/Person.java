@@ -1,17 +1,16 @@
 package com.vaadin.demo.entities;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
-import java.util.Date;
-import javax.persistence.Temporal;
-import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * Created by mstahv
  */
 @MappedSuperclass
+@Table(name = "person")
 public abstract class Person extends AbstractEntity {
 
     @NotEmpty

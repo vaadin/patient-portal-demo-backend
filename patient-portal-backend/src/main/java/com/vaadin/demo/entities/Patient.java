@@ -1,11 +1,12 @@
 package com.vaadin.demo.entities;
 
-import java.util.ArrayList;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "patient")
 public class Patient extends Person {
 
     private Long medicalRecord;
