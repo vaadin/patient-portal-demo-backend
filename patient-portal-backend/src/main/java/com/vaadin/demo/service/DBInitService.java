@@ -91,7 +91,7 @@ public class DBInitService {
                 JournalEntry journalEntry = new JournalEntry();
                 journalEntry.setDate(cal.getTime());
                 journalEntry.setAppointmentType(AppointmentType.values()[random.nextInt(AppointmentType.values().length)]);
-                journalEntry.setEntry("lorem.getParagraphs(1, 4)");
+                journalEntry.setEntry(lorem.getParagraphs(1, 4));
                 journalEntry.setDoctor(patient.getDoctor());
 
                 return journalEntry;

@@ -2,7 +2,6 @@ package com.vaadin.demo.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -16,7 +15,7 @@ public class JournalEntry {
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    @Size(max = 10000)
+    @Column(length = 10000)
     private String entry;
     @NotNull
     private AppointmentType appointmentType;
