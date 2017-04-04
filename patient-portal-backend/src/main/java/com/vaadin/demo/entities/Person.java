@@ -1,10 +1,7 @@
 package com.vaadin.demo.entities;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Date;
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
