@@ -70,6 +70,7 @@ public class AnalyticsController {
                 .getStatsByDoctor()
                 .entrySet()
                 .stream()
+                .filter(e -> e.getKey() != null)
                 .map(e -> {
                     HashMap<String, Object> stats = new HashMap<>();
                     stats.put("doctor", new DoctorDTO(e.getKey()));

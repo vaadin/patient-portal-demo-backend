@@ -14,6 +14,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
@@ -56,8 +57,9 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     List<Object[]> queryGetStatsByGender();
 
     default List<StringLongPair> getStatsByGender() {
-        return queryGetStatsByGender().stream().map(a -> new StringLongPair(((Gender)a[0]).name(), (Long)a[1]))
-                .collect(Collectors.toList());
+        return queryGetStatsByGender().stream().map(a ->
+            new StringLongPair(Optional.ofNullable((Gender)a[0]).map(g -> g.name()).orElse("undefined"),
+                    (Long)a[1])).collect(Collectors.toList());
     }
 
 }
