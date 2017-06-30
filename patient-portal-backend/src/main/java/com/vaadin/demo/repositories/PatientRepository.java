@@ -1,14 +1,6 @@
 package com.vaadin.demo.repositories;
 
-import com.vaadin.demo.entities.Doctor;
-import com.vaadin.demo.entities.Gender;
-import com.vaadin.demo.entities.Patient;
-import com.vaadin.demo.service.StringLongPair;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import java.sql.Date;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -16,6 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.vaadin.demo.entities.Doctor;
+import com.vaadin.demo.entities.Gender;
+import com.vaadin.demo.entities.Patient;
+import com.vaadin.demo.service.StringLongPair;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
@@ -44,7 +44,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
                 .collect(Collectors.toList());
     }
 
-    @Query("SELECT p.doctor, COUNT(*) FROM Patient p GROUP BY p.doctor")
+    @Query("SELECT pd, COUNT(*) FROM Patient p INNER JOIN p.doctor pd GROUP BY pd")
     List<Object[]> queryGetStatsByDoctor();
 
     default Map<Doctor,Long> getStatsByDoctor() {
