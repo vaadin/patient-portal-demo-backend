@@ -4,10 +4,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thedeanda.lorem.Lorem;
 import com.thedeanda.lorem.LoremIpsum;
-import com.vaadin.demo.entities.*;
+import com.vaadin.demo.entities.AppointmentType;
+import com.vaadin.demo.entities.Doctor;
+import com.vaadin.demo.entities.Gender;
+import com.vaadin.demo.entities.JournalEntry;
+import com.vaadin.demo.entities.Patient;
 import com.vaadin.demo.repositories.DoctorRepository;
 import com.vaadin.demo.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +22,12 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,14 +35,23 @@ import java.util.stream.Stream;
 @Transactional
 public class DBInitService {
 
-    public static final int NUM_DOCTORS = 20;
-    public static final int NUM_PATIENTS = 100;
-    public static final int MAX_JOURNAL_ENTRIES = 20;
+    @Value("${db.number.doctors}")
+    public Integer NUM_DOCTORS;
+    @Value("${db.number.patients}")
+    public Integer NUM_PATIENTS;
+    @Value("${db.number.journal}")
+    public Integer MAX_JOURNAL_ENTRIES;
+    // random data can be used for demo purposes
+    @Value("${db.random.data}")
+    private Boolean useRandomData;
 
     @Autowired
     private DoctorRepository doctorRepository;
     @Autowired
     private PatientRepository patientRepository;
+
+
+    private int staticRows;
 
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -45,12 +64,15 @@ public class DBInitService {
     }
 
     public void initDatabase() {
-        createDoctors();
-        createPatients();
+        if (useRandomData) {
+            createRandomData();
+        } else {
+            createStaticData();
+        }
     }
 
-    private void createDoctors() {
-        ArrayList<Doctor> doctors = new ArrayList<>(NUM_DOCTORS);
+    private void createRandomData() {
+        final ArrayList<Doctor> doctors = new ArrayList<>(NUM_DOCTORS);
 
         getRandomUsers(NUM_DOCTORS, "doctors").ifPresent(result -> result.forEach(doctor -> {
             doctors.add(new Doctor(capitalize(doctor.get("name").get("first").asText()),
@@ -58,11 +80,9 @@ public class DBInitService {
         }));
 
         doctorRepository.save(doctors);
-    }
 
-
-    private void createPatients() {
-        doctors = doctorRepository.findAll();
+        doctors.clear();
+        doctors.addAll(doctorRepository.findAll());
         ArrayList<Patient> patients = new ArrayList<>(NUM_PATIENTS);
 
         getRandomUsers(NUM_PATIENTS, "patients").ifPresent(result -> result.forEach(r -> {
@@ -101,10 +121,64 @@ public class DBInitService {
 
             patients.add(patient);
         }));
-
-        
         patientRepository.save(patients);
+    }
 
+    private void createStaticData() {
+        ArrayList<Doctor> doctors = new ArrayList<>(NUM_DOCTORS);
+        Doctor doctor;
+        for (int i = 0; i <NUM_DOCTORS; i++) {
+            doctor = new Doctor("Doc ", "Number " + i);
+            doctors.add(doctor);
+        }
+
+        doctorRepository.save(doctors);
+
+        doctors.clear();
+        doctors.addAll(doctorRepository.findAll());
+
+        ArrayList<Patient> patients = new ArrayList<>(NUM_PATIENTS);
+
+        Patient patient;
+        for (int i = 0; i < NUM_PATIENTS; i++) {
+            patient = new Patient();
+            patient.setGender(Gender.FEMALE);
+
+            patient.setTitle("Doc");
+            patient.setFirstName("First" + i);
+            patient.setMiddleName("Middle" + i);
+            patient.setLastName("Last " + i);
+            patient.setSsn("123456-A1111");
+            patient.setMedicalRecord((long)i);
+
+            Calendar birthDay = Calendar.getInstance();
+            birthDay.set(2000,0,i);
+            patient.setBirthDate(birthDay.getTime());
+
+            Doctor doc = doctors.get(i % doctors.size());
+            patient.setDoctor(doc);
+
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.YEAR, -i);
+            cal.add(Calendar.MONTH, -i);
+            int mark = i;
+            patient.setJournalEntries(Stream.generate(() -> {
+                cal.add(Calendar.DAY_OF_YEAR, -mark);
+                JournalEntry journalEntry = new JournalEntry();
+                journalEntry.setDate(cal.getTime());
+                journalEntry.setAppointmentType(AppointmentType.values()[mark % AppointmentType.values().length]);
+                journalEntry.setEntry(lorem.getParagraphs(1, 4));
+                journalEntry.setDoctor(doc);
+
+                return journalEntry;
+            }).limit(mark % MAX_JOURNAL_ENTRIES).collect(Collectors.toList()));
+
+            // TODO should we have some static image to use too ?
+
+            patients.add(patient);
+        }
+
+        patientRepository.save(patients);
     }
 
     private Optional<JsonNode> getRandomUsers(int num, String seed) {
