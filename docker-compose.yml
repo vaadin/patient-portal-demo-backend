@@ -1,0 +1,8 @@
+version: '3'
+services:
+  patient-portal-backend:
+    build: .
+    environment:
+       - JAVA_OPTS="-Dspring.datasource.url=jdbc:mysql://$datasourceUrl/pp -Dspring.jpa.hibernate.ddl-auto=none"
+    image:
+      'repo.vaadin.com:5001/patient-portal-backend:java8'
