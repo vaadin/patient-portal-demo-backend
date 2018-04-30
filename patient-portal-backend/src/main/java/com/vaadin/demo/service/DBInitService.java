@@ -79,7 +79,7 @@ public class DBInitService {
                     capitalize(doctor.get("name").get("last").asText())));
         }));
 
-        doctorRepository.save(doctors);
+        doctorRepository.saveAll(doctors);
 
         doctors.clear();
         doctors.addAll(doctorRepository.findAll());
@@ -121,7 +121,7 @@ public class DBInitService {
 
             patients.add(patient);
         }));
-        patientRepository.save(patients);
+        patientRepository.saveAll(patients);
     }
 
     private void createStaticData() {
@@ -132,7 +132,7 @@ public class DBInitService {
             doctors.add(doctor);
         }
 
-        doctorRepository.save(doctors);
+        doctorRepository.saveAll(doctors);
 
         doctors.clear();
         doctors.addAll(doctorRepository.findAll());
@@ -178,7 +178,7 @@ public class DBInitService {
             patients.add(patient);
         }
 
-        patientRepository.save(patients);
+        patientRepository.saveAll(patients);
     }
 
     private Optional<JsonNode> getRandomUsers(int num, String seed) {
