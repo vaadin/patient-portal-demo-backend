@@ -13,7 +13,7 @@ public class Patient extends Person {
     @ManyToOne(fetch = FetchType.EAGER)
     private Doctor doctor;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<JournalEntry> journalEntries = new ArrayList<>();
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
