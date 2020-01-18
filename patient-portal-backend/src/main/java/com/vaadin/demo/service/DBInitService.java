@@ -19,15 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,11 +42,6 @@ public class DBInitService {
     private DoctorRepository doctorRepository;
     @Autowired
     private PatientRepository patientRepository;
-
-
-    private int staticRows;
-
-    private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private Lorem lorem = new LoremIpsum();
     private List<Doctor> doctors;
@@ -96,11 +84,7 @@ public class DBInitService {
             patient.setSsn(r.get("id").get("value").asText());
             patient.setMedicalRecord(medicalRecordId++);
 
-            try {
-                patient.setBirthDate(df.parse(r.get("dob").asText()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            patient.setBirthDate(Date.from(Instant.parse(r.get("dob").get("date").asText())));
 
             patient.setDoctor(doctors.get(random.nextInt(doctors.size())));
             Calendar cal = Calendar.getInstance();
