@@ -11,6 +11,8 @@ import com.vaadin.demo.entities.JournalEntry;
 import com.vaadin.demo.entities.Patient;
 import com.vaadin.demo.repositories.DoctorRepository;
 import com.vaadin.demo.repositories.PatientRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -52,10 +54,16 @@ public class DBInitService {
     }
 
     public void initDatabase() {
-        if (useRandomData) {
-            createRandomData();
+        if (doctorRepository.count() != 0L) {
+            getLogger().info("Using the existing data");
         } else {
-            createStaticData();
+            if (useRandomData) {
+                getLogger().info("Generating random data");
+                createRandomData();
+            } else {
+                getLogger().info("Generating static data");
+                createStaticData();
+            }
         }
     }
 
@@ -183,5 +191,9 @@ public class DBInitService {
                         .toUpperCase() + name.substring(1))
                 .collect(Collectors.toList())
         );
+    }
+
+    private Logger getLogger() {
+        return LoggerFactory.getLogger(getClass());
     }
 }
