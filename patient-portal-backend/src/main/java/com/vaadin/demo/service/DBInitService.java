@@ -30,14 +30,14 @@ import java.util.stream.Stream;
 @Transactional
 public class DBInitService {
 
-    @Value("${db.number.doctors}")
+    @Value("${db.number.doctors:20}")
     public Integer NUM_DOCTORS;
-    @Value("${db.number.patients}")
+    @Value("${db.number.patients:100}")
     public Integer NUM_PATIENTS;
-    @Value("${db.number.journal}")
+    @Value("${db.number.journal:20}")
     public Integer MAX_JOURNAL_ENTRIES;
     // random data can be used for demo purposes
-    @Value("${db.random.data}")
+    @Value("${db.random.data:false}")
     private Boolean useRandomData;
 
     @Autowired
