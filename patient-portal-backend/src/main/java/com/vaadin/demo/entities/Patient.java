@@ -1,7 +1,7 @@
 package com.vaadin.demo.entities;
 
 import java.util.ArrayList;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class Patient extends Person {
     @OneToMany(cascade = CascadeType.ALL)
     private List<JournalEntry> journalEntries = new ArrayList<>();
 
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
     private Date lastVisit;
 
     public Patient() {
