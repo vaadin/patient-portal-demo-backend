@@ -1,8 +1,8 @@
 package com.vaadin.demo.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Date;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -19,7 +19,7 @@ public abstract class Person extends AbstractEntity {
     private String title;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(jakarta.persistence.TemporalType.DATE)
     private Date birthDate;
     private String ssn;
     private String pictureUrl;
