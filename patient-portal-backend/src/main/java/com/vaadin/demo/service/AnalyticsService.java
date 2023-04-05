@@ -1,21 +1,12 @@
 package com.vaadin.demo.service;
 
 import com.vaadin.demo.entities.Doctor;
-import com.vaadin.demo.entities.Patient;
-import com.vaadin.demo.repositories.DoctorRepository;
 import com.vaadin.demo.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AnalyticsService {

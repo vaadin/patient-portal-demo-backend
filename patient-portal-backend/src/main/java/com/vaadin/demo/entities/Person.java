@@ -3,7 +3,7 @@ package com.vaadin.demo.entities;
 import jakarta.persistence.*;
 import java.util.Date;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 /**
  * Created by mstahv
